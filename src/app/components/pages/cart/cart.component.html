@@ -43,11 +43,11 @@
       </th>
       <td mat-cell *matCellDef="let element">
         <div class="flex items-center">
-          <button mat-icon-button>
+          <button (click)="removeQuantity(element)" mat-icon-button>
             <mat-icon>remove</mat-icon>
           </button>
           <span>{{ element.quantity }}</span>
-          <button mat-icon-button>
+          <button (click)="addQuanity(element)" mat-icon-button>
             <mat-icon>add</mat-icon>
           </button>
         </div>
@@ -73,12 +73,12 @@
 
     <ng-container matColumnDef="action">
       <th mat-header-cell *matHeaderCellDef>
-        <button mat-raised-button color="warn" class="float-right">
+        <button (click)="clearCart()" mat-raised-button color="warn" class="float-right">
           Clear All
         </button>
       </th>
       <td mat-cell *matCellDef="let element">
-        <button mat-mini-fab color="warn" class="float-right">
+        <button (click)="removeCartItem(element)" mat-mini-fab color="warn" class="float-right">
           <mat-icon>close</mat-icon>
         </button>
       </td>

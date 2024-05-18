@@ -12,20 +12,7 @@
       [rowHeight]="this.rowHeight">
 
       <mat-grid-tile>
-        <app-product-card class="w-full" [fullWidth]="colPerRow === 1"></app-product-card>
-      </mat-grid-tile>      <mat-grid-tile>
-        <app-product-card class="w-full" [fullWidth]="colPerRow === 1"></app-product-card>
-      </mat-grid-tile>      <mat-grid-tile>
-        <app-product-card class="w-full" [fullWidth]="colPerRow === 1"></app-product-card>
-      </mat-grid-tile>      <mat-grid-tile>
-        <app-product-card class="w-full" [fullWidth]="colPerRow === 1"></app-product-card>
-      </mat-grid-tile>      <mat-grid-tile>
-        <app-product-card class="w-full" [fullWidth]="colPerRow === 1"></app-product-card>
-      </mat-grid-tile>      <mat-grid-tile>
-        <app-product-card class="w-full" [fullWidth]="colPerRow === 1"></app-product-card>
-      </mat-grid-tile>
-      <mat-grid-tile>
-        <app-product-card class="w-full" [fullWidth]="colPerRow === 1"></app-product-card>
+        <app-product-card (addToCart)="onAddToCart($event)" class="w-full" [fullWidth]="colPerRow === 1"></app-product-card>
       </mat-grid-tile>
     </mat-grid-list>
   </mat-drawer-content>

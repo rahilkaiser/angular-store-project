@@ -15,6 +15,7 @@ import {
   MatTable
 } from "@angular/material/table";
 import {MatIcon} from "@angular/material/icon";
+import {CartService} from "../../../services/cart.service";
 
 @Component({
   selector: 'app-cart',
@@ -81,17 +82,53 @@ export class CartComponent implements OnInit {
     'action'
   ]
 
-  constructor() {
+  constructor(private cartService: CartService) {
   }
 
   ngOnInit(): void {
     this.dataSource = this.cart.items;
+    this.cartService.cart.subscribe((_cart: Cart) => {
+      this.cart = _cart;
+      this.dataSource = this.cart.items;
+    })
   }
 
-
+  /** Gets the Total of the Cart
+   *
+   * @param items
+   */
   getTotal(items: Array<CartItem>): number {
-    return items.map((item) => item.price * item.quantity).reduce(
-      (prev, current) => prev + current, 0
-    )
+    return this.cartService.getTotal(items);
+  }
+
+  /** Clears whole Cart
+   *
+   */
+  clearCart() {
+    this.cartService.clearCart()
+  }
+
+  /** Removes cartItem
+   *
+   * @param element
+   */
+  removeCartItem(element: CartItem) {
+    this.cartService.removeCartItem(element.id);
+  }
+
+  /** Reduces the quantity of a cartitem
+   *
+   * @param element
+   */
+  removeQuantity(element: CartItem) {
+    this.cartService.removeCartItemQuantity(element);
+  }
+
+  /** Adds the quantity of a CartItem
+   *
+   * @param element
+   */
+  addQuanity(element:CartItem) {
+    this.cartService.addToCart(element)
   }
 }
