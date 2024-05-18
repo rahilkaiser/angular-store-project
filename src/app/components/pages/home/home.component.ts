@@ -52,8 +52,8 @@ export class HomeComponent implements OnInit, OnDestroy{
   }
 
   onShowCategory(selectedCategory: string) {
-    console.log(selectedCategory);
     this.category = selectedCategory;
+    this.getProducts();
   }
 
   onAddToCart(product: Product) {
@@ -69,7 +69,7 @@ export class HomeComponent implements OnInit, OnDestroy{
 
   private getProducts() {
     const sortOrder = this.sortDesc ? "desc" : "asc";
-    this.productsSubscription = this.storeService.getAllProducts(this.count.toString(), sortOrder).subscribe(
+    this.productsSubscription = this.storeService.getAllProducts(this.count.toString(), sortOrder, this.category).subscribe(
       (_products: Product[]) => {
         this.products = _products;
       }
