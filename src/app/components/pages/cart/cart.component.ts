@@ -16,6 +16,8 @@ import {
 } from "@angular/material/table";
 import {MatIcon} from "@angular/material/icon";
 import {CartService} from "../../../services/cart.service";
+import {HttpClient} from "@angular/common/http";
+import {loadStripe} from "@stripe/stripe-js";
 
 @Component({
   selector: 'app-cart',
@@ -49,27 +51,7 @@ import {CartService} from "../../../services/cart.service";
 })
 export class CartComponent implements OnInit {
   cart: Cart = {
-    items: [
-      {
-        productImg: 'https://via.placeholder.com/150',
-        name: 'Sneakers',
-        price: 150,
-        quantity: 1,
-        id: 1,
-      },{
-        productImg: 'https://via.placeholder.com/150',
-        name: 'Sneakers',
-        price: 150,
-        quantity: 3,
-        id: 1,
-      },{
-        productImg: 'https://via.placeholder.com/150',
-        name: 'Sneakers',
-        price: 150,
-        quantity: 1,
-        id: 1,
-      },
-    ]
+    items: []
   }
   dataSource: Array<CartItem> = [];
 
@@ -82,7 +64,7 @@ export class CartComponent implements OnInit {
     'action'
   ]
 
-  constructor(private cartService: CartService) {
+  constructor(private cartService: CartService, private http: HttpClient) {
   }
 
   ngOnInit(): void {
@@ -128,7 +110,24 @@ export class CartComponent implements OnInit {
    *
    * @param element
    */
-  addQuanity(element:CartItem) {
+  addQuanity(element: CartItem) {
     this.cartService.addToCart(element)
+  }
+
+  onCheckout() {
+    this.http.post('http://localhost:4242/checkout', {
+      items: this.cart.items
+    }).subscribe(async (res: any) => {
+      let stripe = await loadStripe('pk_test_51PIC62L2yfeZBzkaWBRd5umubSCKmiavVKq47u3mphUExH14ls7aQotJhgSJTYOloiW8NDw3XQtP3zcelr80INSk00SpCnFgNu');
+      stripe?.redirectToCheckout({
+        sessionId: res.id
+      }).then((result) => {
+        if (result.error) {
+          console.log(result.error.message);
+        }
+      });
+    }, (error) => {
+      console.error('Error creating checkout session:', error);
+    });
   }
 }
