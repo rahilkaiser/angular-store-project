@@ -12,6 +12,12 @@ export class StoreService {
 
   constructor(private httpClient: HttpClient) { }
 
+  /** Gets All Products from FakeStoreAPI
+   *
+   * @param limit
+   * @param sort
+   * @param category
+   */
   getAllProducts(limit='10', sort='desc', category?: string): Observable<Product[]> {
 
     let params = new HttpParams()
@@ -21,6 +27,9 @@ export class StoreService {
     return this.httpClient.get<Product[]>(`${STORE_BASE_URL}/products${category ? '/category/' + category : ''}`, { params });
   }
 
+  /** Gets all Categories from FakeStoreAPI
+   *
+   */
   getAllCategories():Observable<string[]> {
     return this.httpClient.get<string[]>(`${STORE_BASE_URL}/products/categories`);
   }

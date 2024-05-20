@@ -18,8 +18,6 @@ export const initialState: ProductState = {
 export const productReducer = createReducer(
   initialState,
   on(loadProducts, (state, {itemCount, sortOrder, category}) => {
-      console.log(itemCount, sortOrder, category);
-
       return ({
         ...state,
         status: LoadingStatus.Loading,

@@ -38,13 +38,11 @@ export class HeaderComponent implements OnInit, OnDestroy {
   cartItemsObservable: Observable<CartItem[]> = this.store.select(getCartItems);
   cartItems: CartItem[] = [];
   itemsQuantity: number = 0;
-  // protected readonly menubar = menubar;
 
   constructor(private cartService: CartService, private store: Store<CartState>) {
   }
 
   ngOnInit(): void {
-
     this.cartItemsSubsription = this.cartItemsObservable.subscribe((items) => {
       this.cartItems = items;
       this.itemsQuantity = items.map((item) => item.quantity).reduce(
@@ -59,7 +57,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
     }
   }
 
-
   getTotal() {
     return this.cartService.getTotal(this.cartItems);
   }
@@ -67,6 +64,4 @@ export class HeaderComponent implements OnInit, OnDestroy {
   clearCart() {
     this.store.dispatch(clearCart());
   }
-
-
 }

@@ -18,7 +18,6 @@ export class ProductEffects {
     () => this.actions$.pipe(
       ofType(loadProducts),
       switchMap((action) => {
-        console.log('loadProducts$ effect triggered', action);
         return from(this.storeService.getAllProducts(action.itemCount, action.sortOrder, action.category)).pipe(
           map((products) => loadProductsSuccess({ products: products })),
           catchError((error) => of(loadProductsFailure({ error })))

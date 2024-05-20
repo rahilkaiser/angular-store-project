@@ -39,7 +39,7 @@ export const cartReducer = createReducer(
       if (itemIndex !== -1) {
         const item = {...items[itemIndex]};
         item.quantity++;
-        items[itemIndex] = item; // Replace the old item with the updated item
+        items[itemIndex] = item;
       } else {
         items.push({...cartItem});
       }
@@ -53,11 +53,10 @@ export const cartReducer = createReducer(
   on(removeQuantity, (state, {cartItem}) => {
       const updatedItems = state.items.map(item => {
         if (item.id === cartItem.id && item.quantity > 0) {
-          // Decrement quantity but keep it immutable by creating a new object
           return {...item, quantity: item.quantity - 1};
         }
         return item;
-      }).filter(item => item.quantity > 0); // Filter out items with zero quantity
+      }).filter(item => item.quantity > 0);
 
       return ({
         ...state,

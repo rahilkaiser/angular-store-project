@@ -1,14 +1,12 @@
 import {Injectable} from '@angular/core';
-import {Cart, CartItem} from "../models/cart.model";
-import {CartState} from "../store/cart/cart.reducer";
-import {Store} from "@ngrx/store";
+import {CartItem} from "../models/cart.model";
 
 @Injectable({
   providedIn: 'root'
 })
 export class CartService {
 
-  constructor(private store: Store<CartState>) {
+  constructor() {
   }
 
   /** Gets the Total Quantity of the Cart

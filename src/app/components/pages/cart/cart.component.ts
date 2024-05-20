@@ -80,12 +80,6 @@ export class CartComponent implements OnInit, OnDestroy {
       this.dataSource = items;
       this.cart.items = items;
     });
-
-    // this.dataSource = this.cart.items;
-    // this.cartService.cart.subscribe((_cart: Cart) => {
-    //   this.cart = _cart;
-    //   this.dataSource = this.cart.items;
-    // })
   }
 
   ngOnDestroy(): void {
@@ -95,49 +89,25 @@ export class CartComponent implements OnInit, OnDestroy {
 
   }
 
-  /** Gets the Total of the Cart
-   *
-   *
-   */
   getTotal(): number {
     return this.cartService.getTotal(this.dataSource);
   }
 
-  /** Clears whole Cart
-   *
-   */
   clearCart() {
-    // this.cartService.clearCart()
-
     this.store.dispatch(clearCart());
   }
 
-  /** Removes cartItem
-   *
-   * @param cartItem
-   */
   removeCartItem(cartItem: CartItem) {
-
     this.store.dispatch(removeCartItem({cartItem: cartItem}));
   }
 
-  /** Reduces the quantity of a cartitem
-   *
-   * @param cartItem
-   */
   removeQuantity(cartItem: CartItem) {
-
     this.store.dispatch(removeQuantity({cartItem: cartItem}));
   }
 
-  /** Adds the quantity of a CartItem
-   *
-   * @param cartItem
-   */
   addQuanity(cartItem: CartItem) {
     this.store.dispatch(addCartItem({cartItem: cartItem}));
   }
-
 
   onCheckout() {
     this.http.post('http://localhost:4242/checkout', {
@@ -155,6 +125,4 @@ export class CartComponent implements OnInit, OnDestroy {
       console.error('Error creating checkout session:', error);
     });
   }
-
-
 }

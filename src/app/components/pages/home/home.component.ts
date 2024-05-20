@@ -77,27 +77,6 @@ export class HomeComponent implements OnInit {
     this.getProducts();
   }
 
-  // onAddToCart(product: Product) {
-  //   this.store.dispatch(addCartItem({
-  //     cartItem: {
-  //       productImg: product.image,
-  //       id: product.id,
-  //       quantity: 1,
-  //       name: product.title,
-  //       price: product.price,
-  //     }
-  //   }))
-  //
-  //   // this.cartService.addToCart({
-  //   //   productImg: product.image,
-  //   //   id: product.id,
-  //   //   quantity: 1,
-  //   //   name: product.title,
-  //   //   price: product.price,
-  //   // });
-  // }
-
-
   private getProducts() {
     const sortOrder = this.sortDesc ? "desc" : "asc";
 
