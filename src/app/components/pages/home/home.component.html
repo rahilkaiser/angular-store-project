@@ -31,8 +31,8 @@
 
           <mat-grid-tile *ngFor="let product of state.products">
             <app-product-card
-              [product]="product"
-              (addToCart)="onAddToCart($event)"
+              [product]="product">
+<!--              (addToCart)="onAddToCart($event)"-->
               class="w-full"
               [fullWidth]="colPerRow === 1"></app-product-card>
           </mat-grid-tile>

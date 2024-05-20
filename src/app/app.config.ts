@@ -9,11 +9,12 @@ import {StoreDevtoolsModule} from "@ngrx/store-devtools";
 import {provideEffects} from "@ngrx/effects";
 import {productReducer} from "./store/products/product.reducer";
 import {ProductEffects} from "./store/products/product.effects";
+import {cartReducer} from "./store/cart/cart.reducer";
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideRouter(routes),
-    provideStore({productState: productReducer}),
+    provideStore({productState: productReducer, cartState: cartReducer}),
     importProvidersFrom(StoreDevtoolsModule.instrument({maxAge: 25})),
     provideEffects([ProductEffects]),
     provideAnimationsAsync(),

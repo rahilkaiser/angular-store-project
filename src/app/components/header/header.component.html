@@ -15,7 +15,7 @@
           <span class="mr-16">{{ itemsQuantity }}</span>
           <a routerLink="cart">View Cart</a>
         </div>
-        <div *ngFor="let item of cart.items"
+        <div *ngFor="let item of cartItems"
              class="flex justify-between font-light mb-2 py-2 ">
           {{item.name}} x {{item.quantity}}
           <span class="font-bold">{{ item.price | currency }}</span>
@@ -23,7 +23,7 @@
 
         <div class="flex justify-between font-light mb-2 py-2 ">
           Summe:
-          <span class="font-bold">{{ getTotal(cart.items) | currency }}</span>
+          <span class="font-bold">{{ getTotal() | currency }}</span>
         </div>
 
         <div class="pt-2 flex justify-between">

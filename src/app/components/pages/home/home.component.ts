@@ -18,6 +18,7 @@ import {MatProgressSpinner} from "@angular/material/progress-spinner";
 import {BooleanInput} from "@angular/cdk/coercion";
 import {MatIconButton} from "@angular/material/button";
 import {MatIcon} from "@angular/material/icon";
+import {addCartItem} from "../../../store/cart/cart.actions";
 
 const ROW_HEIGHT: { [id: number]: number } = {1: 400, 3: 335, 4: 350}
 
@@ -43,10 +44,9 @@ const ROW_HEIGHT: { [id: number]: number } = {1: 400, 3: 335, 4: 350}
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
 })
-export class HomeComponent implements OnInit{
+export class HomeComponent implements OnInit {
 
   @ViewChild('drawer') drawer: MatDrawer | undefined;
-
 
   colPerRow = 3;
   category: string | undefined;
@@ -58,7 +58,7 @@ export class HomeComponent implements OnInit{
 
   productState$: Observable<ProductState>;
 
-  constructor(private store:Store,private cartService: CartService, private storeService: StoreService) {
+  constructor(private store: Store, private cartService: CartService, private storeService: StoreService) {
     this.productState$ = this.store.select(selectAllProducts);
 
   }
@@ -77,24 +77,34 @@ export class HomeComponent implements OnInit{
     this.getProducts();
   }
 
-  onAddToCart(product: Product) {
-    this.cartService.addToCart({
-      productImg: product.image,
-      id: product.id,
-      quantity: 1,
-      name: product.title,
-      price: product.price,
-    });
-  }
+  // onAddToCart(product: Product) {
+  //   this.store.dispatch(addCartItem({
+  //     cartItem: {
+  //       productImg: product.image,
+  //       id: product.id,
+  //       quantity: 1,
+  //       name: product.title,
+  //       price: product.price,
+  //     }
+  //   }))
+  //
+  //   // this.cartService.addToCart({
+  //   //   productImg: product.image,
+  //   //   id: product.id,
+  //   //   quantity: 1,
+  //   //   name: product.title,
+  //   //   price: product.price,
+  //   // });
+  // }
 
 
   private getProducts() {
     const sortOrder = this.sortDesc ? "desc" : "asc";
 
     this.store.dispatch(loadProducts({
-      itemCount: this.count.toString(),
-      sortOrder: sortOrder,
-      category: this.category,
+        itemCount: this.count.toString(),
+        sortOrder: sortOrder,
+        category: this.category,
       }
     ));
   }

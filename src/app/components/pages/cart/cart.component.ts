@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Cart, CartItem} from "../../../models/cart.model";
 import {MatCard} from "@angular/material/card";
 import {CurrencyPipe, NgIf} from "@angular/common";
@@ -18,6 +18,10 @@ import {MatIcon} from "@angular/material/icon";
 import {CartService} from "../../../services/cart.service";
 import {HttpClient} from "@angular/common/http";
 import {loadStripe} from "@stripe/stripe-js";
+import {Store} from "@ngrx/store";
+import {addCartItem, clearCart, removeCartItem, removeQuantity} from "../../../store/cart/cart.actions";
+import {Observable, Subscription} from "rxjs";
+import {getCartItems} from "../../../store/cart/cart.selectors";
 
 @Component({
   selector: 'app-cart',
@@ -49,11 +53,13 @@ import {loadStripe} from "@stripe/stripe-js";
   templateUrl: './cart.component.html',
   styleUrl: './cart.component.css'
 })
-export class CartComponent implements OnInit {
+export class CartComponent implements OnInit, OnDestroy {
   cart: Cart = {
     items: []
   }
   dataSource: Array<CartItem> = [];
+
+  cartItems: Observable<CartItem[]> = this.store.select(getCartItems);
 
   displayedColumns: Array<string> = [
     'productImg',
@@ -63,56 +69,75 @@ export class CartComponent implements OnInit {
     'total',
     'action'
   ]
+  private cartItemsSubsription: Subscription | undefined;
 
-  constructor(private cartService: CartService, private http: HttpClient) {
+  constructor(private store: Store, private cartService: CartService, private http: HttpClient) {
   }
 
   ngOnInit(): void {
-    this.dataSource = this.cart.items;
-    this.cartService.cart.subscribe((_cart: Cart) => {
-      this.cart = _cart;
-      this.dataSource = this.cart.items;
-    })
+
+    this.cartItemsSubsription = this.cartItems.subscribe((items) => {
+      this.dataSource = items;
+      this.cart.items = items;
+    });
+
+    // this.dataSource = this.cart.items;
+    // this.cartService.cart.subscribe((_cart: Cart) => {
+    //   this.cart = _cart;
+    //   this.dataSource = this.cart.items;
+    // })
+  }
+
+  ngOnDestroy(): void {
+    if (this.cartItemsSubsription) {
+      this.cartItemsSubsription.unsubscribe();
+    }
+
   }
 
   /** Gets the Total of the Cart
    *
-   * @param items
+   *
    */
-  getTotal(items: Array<CartItem>): number {
-    return this.cartService.getTotal(items);
+  getTotal(): number {
+    return this.cartService.getTotal(this.dataSource);
   }
 
   /** Clears whole Cart
    *
    */
   clearCart() {
-    this.cartService.clearCart()
+    // this.cartService.clearCart()
+
+    this.store.dispatch(clearCart());
   }
 
   /** Removes cartItem
    *
-   * @param element
+   * @param cartItem
    */
-  removeCartItem(element: CartItem) {
-    this.cartService.removeCartItem(element.id);
+  removeCartItem(cartItem: CartItem) {
+
+    this.store.dispatch(removeCartItem({cartItem: cartItem}));
   }
 
   /** Reduces the quantity of a cartitem
    *
-   * @param element
+   * @param cartItem
    */
-  removeQuantity(element: CartItem) {
-    this.cartService.removeCartItemQuantity(element);
+  removeQuantity(cartItem: CartItem) {
+
+    this.store.dispatch(removeQuantity({cartItem: cartItem}));
   }
 
   /** Adds the quantity of a CartItem
    *
-   * @param element
+   * @param cartItem
    */
-  addQuanity(element: CartItem) {
-    this.cartService.addToCart(element)
+  addQuanity(cartItem: CartItem) {
+    this.store.dispatch(addCartItem({cartItem: cartItem}));
   }
+
 
   onCheckout() {
     this.http.post('http://localhost:4242/checkout', {
@@ -130,4 +155,6 @@ export class CartComponent implements OnInit {
       console.error('Error creating checkout session:', error);
     });
   }
+
+
 }
