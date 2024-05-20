@@ -110,7 +110,7 @@ export class CartComponent implements OnInit, OnDestroy {
   }
 
   onCheckout() {
-    this.http.post('http://localhost:4242/checkout', {
+    this.http.post('https://c208-89-247-160-38.ngrok-free.app/checkout', {
       items: this.cart.items
     }).subscribe(async (res: any) => {
       let stripe = await loadStripe('pk_test_51PIC62L2yfeZBzkaWBRd5umubSCKmiavVKq47u3mphUExH14ls7aQotJhgSJTYOloiW8NDw3XQtP3zcelr80INSk00SpCnFgNu');
