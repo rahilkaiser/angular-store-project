@@ -4,10 +4,18 @@ import {provideRouter} from '@angular/router';
 import {routes} from './app.routes';
 import {provideAnimationsAsync} from '@angular/platform-browser/animations/async';
 import {HttpClientModule} from "@angular/common/http";
+import {provideStore} from "@ngrx/store";
+import {StoreDevtoolsModule} from "@ngrx/store-devtools";
+import {provideEffects} from "@ngrx/effects";
+import {productReducer} from "./store/products/product.reducer";
+import {ProductEffects} from "./store/products/product.effects";
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideRouter(routes),
+    provideStore({productState: productReducer}),
+    importProvidersFrom(StoreDevtoolsModule.instrument({maxAge: 25})),
+    provideEffects([ProductEffects]),
     provideAnimationsAsync(),
     importProvidersFrom(HttpClientModule)]
 };

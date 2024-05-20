@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, HostListener, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {MatDrawer, MatDrawerContainer, MatDrawerContent} from "@angular/material/sidenav";
 import {ProductsHeaderComponent} from "./components/products-header/products-header.component";
 import {FiltersComponent} from "./components/filters/filters.component";
@@ -6,10 +6,18 @@ import {MatGridList, MatGridTile} from "@angular/material/grid-list";
 import {ProductCardComponent} from "./components/product-card/product-card.component";
 import {Product} from "../../../models/product.model";
 import {CartService} from "../../../services/cart.service";
-import {Subscription} from "rxjs";
+import {Observable, Subscription} from "rxjs";
 import {StoreService} from "../../../services/store.service";
-import {NgForOf} from "@angular/common";
-
+import {AsyncPipe, NgForOf, NgIf} from "@angular/common";
+import {provideStore, Store} from "@ngrx/store";
+import {loadProducts} from "../../../store/products/product.actions";
+import {selectAllProducts} from "../../../store/products/product.selectors";
+import {productReducer, ProductState} from "../../../store/products/product.reducer";
+import {LoadingStatus} from "../../../models/loadingstates.model";
+import {MatProgressSpinner} from "@angular/material/progress-spinner";
+import {BooleanInput} from "@angular/cdk/coercion";
+import {MatIconButton} from "@angular/material/button";
+import {MatIcon} from "@angular/material/icon";
 
 const ROW_HEIGHT: { [id: number]: number } = {1: 400, 3: 335, 4: 350}
 
@@ -25,21 +33,34 @@ const ROW_HEIGHT: { [id: number]: number } = {1: 400, 3: 335, 4: 350}
     MatGridList,
     MatGridTile,
     ProductCardComponent,
-    NgForOf
+    NgForOf,
+    AsyncPipe,
+    NgIf,
+    MatProgressSpinner,
+    MatIconButton,
+    MatIcon
   ],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
 })
-export class HomeComponent implements OnInit, OnDestroy{
+export class HomeComponent implements OnInit{
+
+  @ViewChild('drawer') drawer: MatDrawer | undefined;
+
+
   colPerRow = 3;
   category: string | undefined;
   rowHeight: number = ROW_HEIGHT[this.colPerRow];
-  products: Product[] = [];
   sortDesc = true;
   count: number = 10;
-  productsSubscription: Subscription | undefined;
 
-  constructor(private cartService: CartService, private storeService: StoreService) {
+  isDrawerOpen = false;
+
+  productState$: Observable<ProductState>;
+
+  constructor(private store:Store,private cartService: CartService, private storeService: StoreService) {
+    this.productState$ = this.store.select(selectAllProducts);
+
   }
 
   ngOnInit(): void {
@@ -69,17 +90,13 @@ export class HomeComponent implements OnInit, OnDestroy{
 
   private getProducts() {
     const sortOrder = this.sortDesc ? "desc" : "asc";
-    this.productsSubscription = this.storeService.getAllProducts(this.count.toString(), sortOrder, this.category).subscribe(
-      (_products: Product[]) => {
-        this.products = _products;
-      }
-    );
-  }
 
-  ngOnDestroy(): void {
-    if (this.productsSubscription) {
-      this.productsSubscription.unsubscribe();
-    }
+    this.store.dispatch(loadProducts({
+      itemCount: this.count.toString(),
+      sortOrder: sortOrder,
+      category: this.category,
+      }
+    ));
   }
 
   onItemShowCountChange($event: number) {
@@ -90,5 +107,19 @@ export class HomeComponent implements OnInit, OnDestroy{
   onSortDescChange($event: boolean) {
     this.sortDesc = $event;
     this.getProducts();
+  }
+
+  protected readonly LoadingStatus = LoadingStatus;
+
+
+  toggleDrawer() {
+    this.isDrawerOpen = !this.isDrawerOpen;
+  }
+
+  onContentClicked() {
+    if (this.drawer && this.isDrawerOpen) {
+      this.drawer.close();
+      this.isDrawerOpen = false;
+    }
   }
 }

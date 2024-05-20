@@ -1,28 +1,44 @@
-<mat-drawer-container class="min-h-full max-w-7xl mx-auto ">
+<ng-container *ngIf="productState$ | async as state">
+  <mat-drawer-container class="min-h-full max-w-7xl mx-auto ">
 
-  <mat-drawer mode="side" class="p-6" opened>
-    <app-filters (showCategory)="onShowCategory($event)"></app-filters>
-  </mat-drawer>
+    <mat-drawer #drawer mode="side" position="start" [(opened)]="isDrawerOpen" class="p-6">
+      <app-filters (showCategory)="onShowCategory($event)"></app-filters>
+    </mat-drawer>
 
-  <mat-drawer-content class="p-6">
-    <app-products-header
-      (LayoutViewChange)="onColumnsCountChange($event)"
-      (setItemsShowCount)="onItemShowCountChange($event)"
-      (setSortDesc)="onSortDescChange($event)"
-    ></app-products-header>
-    <mat-grid-list
-      gutterSize="16"
-      [cols]="this.colPerRow"
-      [rowHeight]="this.rowHeight">
+    <mat-drawer-content class="p-6" (click)="onContentClicked()">
 
-      <mat-grid-tile *ngFor="let product of products">
-        <app-product-card
-          [product]="product"
-          (addToCart)="onAddToCart($event)"
-          class="w-full"
-          [fullWidth]="colPerRow === 1"></app-product-card>
-      </mat-grid-tile>
-    </mat-grid-list>
-  </mat-drawer-content>
+      <button mat-icon-button (click)="toggleDrawer(); $event.stopPropagation();">
+        <mat-icon>{{ isDrawerOpen ? 'arrow_back' : 'arrow_forward' }}</mat-icon>
+        </button>
+      <div class="flex justify-center items-center h-full">
+        <mat-spinner *ngIf="state.status === LoadingStatus.Loading" diameter="50"></mat-spinner>
+      </div>
 
-</mat-drawer-container>
+      <div *ngIf="state.status === LoadingStatus.Error" class="error-message">
+        <p>Error loading products: {{ state.error }}</p>
+      </div>
+
+      <ng-container *ngIf="state.status === LoadingStatus.Success">
+        <app-products-header
+          (LayoutViewChange)="onColumnsCountChange($event)"
+          (setItemsShowCount)="onItemShowCountChange($event)"
+          (setSortDesc)="onSortDescChange($event)"
+        ></app-products-header>
+        <mat-grid-list
+          gutterSize="16"
+          [cols]="this.colPerRow"
+          [rowHeight]="this.rowHeight">
+
+          <mat-grid-tile *ngFor="let product of state.products">
+            <app-product-card
+              [product]="product"
+              (addToCart)="onAddToCart($event)"
+              class="w-full"
+              [fullWidth]="colPerRow === 1"></app-product-card>
+          </mat-grid-tile>
+        </mat-grid-list>
+      </ng-container>
+    </mat-drawer-content>
+
+  </mat-drawer-container>
+</ng-container>
