@@ -12,7 +12,8 @@
 
 Welcome to the Angular Store project! This is an e-commerce store built with Angular, utilizing TailwindCSS for styling and Angular Material for UI components. The project heavily relies on NGRX for state management and RXJS for reactive programming. It uses the FakestoreAPI to fetch product data and implements a full cart system with Stripe for checkout.
 
-![App Screenshot](https://your-image-url-here)
+![Store](https://github.com/rahilkaiser/angular-store-project/assets/95457266/022c4d34-baec-4fda-80a1-ebf3d207a225)
+
 
 ## Tech Stack
 
