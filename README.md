@@ -57,11 +57,11 @@ Ensure you have the following installed:
    git clone https://github.com/rahilkaiser/angular-store-project.git
    cd angular-store-project
    
-2. **Install dependencies:**:
+2. **Install dependencies**:
    ```bash
     npm install
    
-3. **Run the Angular application:**:
+3. **Run the Angular application**:
    ```bash
     ng serve
 Navigate to http://localhost:4200/ in your web browser to view the application.
