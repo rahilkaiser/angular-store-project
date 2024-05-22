@@ -1,27 +1,69 @@
-# Frontend
+# Angular Store Project
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 17.3.7.
+## Table of Contents
 
-## Development server
+1. [Introduction](#introduction)
+2. [Tech Stack](#tech-stack)
+3. [Features](#features)
+4. [Quick Start](#quick-start)
+5. [Live Demo](#live-demo)
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+## Introduction
 
-## Code scaffolding
+Welcome to the Angular Store project! This is an e-commerce store built with Angular, utilizing TailwindCSS for styling and Angular Material for UI components. The project heavily relies on NGRX for state management and RXJS for reactive programming. It uses the FakestoreAPI to fetch product data and implements a full cart system with Stripe for checkout.
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+![App Screenshot](https://your-image-url-here)
 
-## Build
+## Tech Stack
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+- **Frontend**:
+  - **Angular**: Framework for building the application.
+  - **TailwindCSS**: Utility-first CSS framework.
+  - **Angular Material**: UI component library.
+  - **NGRX**: State management library.
+  - **RXJS**: Reactive programming library.
+  - **TypeScript**: Primary programming language.
 
-## Running unit tests
+- **APIs and Services**:
+  - **FakestoreAPI**: API for fetching product data.
+  - **Stripe**: Payment processing for checkout.
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+## Features
 
-## Running end-to-end tests
+- **Product Listing**: Browse a wide range of products fetched from FakestoreAPI.
+- **Cart System**: Add products to the cart, view cart items, and calculate the total price.
+- **Checkout**: Proceed to checkout using Stripe for payment processing.
+- **Category Filtering**: Filter products by category.
+- **Sorting**: Sort products based on different criteria.
+- **Grid Layout Management**: Change the grid layout for product display.
+- **Product Limitation**: Limit the number of products displayed.
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+## Quick Start
 
-## Further help
+### Prerequisites
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+Ensure you have the following installed:
+
+- **Git**: Version control system.
+- **Node.js**: JavaScript runtime.
+- **NPM**: Node package manager.
+- **Angular CLI**: Command line interface for Angular.
+
+### Installation
+
+1. **Clone the repository**:
+   ```bash
+   git clone https://github.com/rahilkaiser/angular-store-project.git
+   cd angular-store-project
+   
+2. **Install dependencies:**:
+   ```bash
+    npm install
+   
+3. **Run the Angular application:**:
+   ```bash
+    ng serve
+Navigate to http://localhost:4200/ in your web browser to view the application.
+
+### Live Demo
+Check out the live demo [here](https://sensational-tulumba-e0c3e7.netlify.app/home).
