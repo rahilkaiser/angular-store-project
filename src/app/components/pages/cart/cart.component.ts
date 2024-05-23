@@ -22,6 +22,8 @@ import {Store} from "@ngrx/store";
 import {addCartItem, clearCart, removeCartItem, removeQuantity} from "../../../store/cart/cart.actions";
 import {Observable, Subscription} from "rxjs";
 import {getCartItems} from "../../../store/cart/cart.selectors";
+import {LoadingStatus} from "../../../models/loadingstates.model";
+import {MatProgressSpinner} from "@angular/material/progress-spinner";
 
 @Component({
   selector: 'app-cart',
@@ -48,7 +50,8 @@ import {getCartItems} from "../../../store/cart/cart.selectors";
     MatHeaderRowDef,
     CurrencyPipe,
     MatMiniFabButton,
-    MatIconButton
+    MatIconButton,
+    MatProgressSpinner
   ],
   templateUrl: './cart.component.html',
   styleUrl: './cart.component.css'
@@ -69,6 +72,9 @@ export class CartComponent implements OnInit, OnDestroy {
     'total',
     'action'
   ]
+
+  checkoutIsLoading: boolean = false;
+
   private cartItemsSubsription: Subscription | undefined;
 
   constructor(private store: Store, private cartService: CartService, private http: HttpClient) {
@@ -110,19 +116,25 @@ export class CartComponent implements OnInit, OnDestroy {
   }
 
   onCheckout() {
+    this.checkoutIsLoading = true;
     this.http.post('https://angular-store-project-backend.onrender.com/checkout', {
       items: this.cart.items
     }).subscribe(async (res: any) => {
       let stripe = await loadStripe('pk_test_51PIC62L2yfeZBzkaWBRd5umubSCKmiavVKq47u3mphUExH14ls7aQotJhgSJTYOloiW8NDw3XQtP3zcelr80INSk00SpCnFgNu');
       stripe?.redirectToCheckout({
-        sessionId: res.id
+        sessionId: res.id,
       }).then((result) => {
         if (result.error) {
           console.log(result.error.message);
         }
+        this.checkoutIsLoading = false;
       });
     }, (error) => {
       console.error('Error creating checkout session:', error);
+      this.checkoutIsLoading = false;
     });
   }
+
+  protected readonly LoadingStatus = LoadingStatus;
+
 }

@@ -1,6 +1,6 @@
 import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {MatToolbar} from "@angular/material/toolbar";
-import {RouterLink} from "@angular/router";
+import {Router, RouterLink} from "@angular/router";
 import {MatIcon} from "@angular/material/icon";
 import {MatBadge} from "@angular/material/badge";
 import {MatIconButton} from "@angular/material/button";
@@ -39,7 +39,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   cartItems: CartItem[] = [];
   itemsQuantity: number = 0;
 
-  constructor(private cartService: CartService, private store: Store<CartState>) {
+  constructor(private router:Router, private cartService: CartService, private store: Store<CartState>) {
   }
 
   ngOnInit(): void {
@@ -63,5 +63,9 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   clearCart() {
     this.store.dispatch(clearCart());
+  }
+
+  navigateToHome() {
+    this.router.navigate(['home']);
   }
 }

@@ -8,7 +8,7 @@ import {Product} from "../../../models/product.model";
 import {CartService} from "../../../services/cart.service";
 import {Observable, Subscription} from "rxjs";
 import {StoreService} from "../../../services/store.service";
-import {AsyncPipe, NgForOf, NgIf} from "@angular/common";
+import {AsyncPipe, CurrencyPipe, NgForOf, NgIf} from "@angular/common";
 import {provideStore, Store} from "@ngrx/store";
 import {loadProducts} from "../../../store/products/product.actions";
 import {selectAllProducts} from "../../../store/products/product.selectors";
@@ -16,11 +16,11 @@ import {productReducer, ProductState} from "../../../store/products/product.redu
 import {LoadingStatus} from "../../../models/loadingstates.model";
 import {MatProgressSpinner} from "@angular/material/progress-spinner";
 import {BooleanInput} from "@angular/cdk/coercion";
-import {MatIconButton} from "@angular/material/button";
+import {MatButton, MatIconButton} from "@angular/material/button";
 import {MatIcon} from "@angular/material/icon";
 import {addCartItem} from "../../../store/cart/cart.actions";
 
-const ROW_HEIGHT: { [id: number]: number } = {1: 400, 3: 335, 4: 350}
+const ROW_HEIGHT: { [id: number]: number } = {1: 400, 3: 450, 4: 425}
 
 @Component({
   selector: 'app-home',
@@ -39,7 +39,9 @@ const ROW_HEIGHT: { [id: number]: number } = {1: 400, 3: 335, 4: 350}
     NgIf,
     MatProgressSpinner,
     MatIconButton,
-    MatIcon
+    MatIcon,
+    CurrencyPipe,
+    MatButton
   ],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'

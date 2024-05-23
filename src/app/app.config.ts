@@ -1,5 +1,5 @@
 import {ApplicationConfig, importProvidersFrom} from '@angular/core';
-import {provideRouter} from '@angular/router';
+import {provideRouter, withHashLocation} from '@angular/router';
 
 import {routes} from './app.routes';
 import {provideAnimationsAsync} from '@angular/platform-browser/animations/async';
@@ -13,7 +13,7 @@ import {cartReducer} from "./store/cart/cart.reducer";
 
 export const appConfig: ApplicationConfig = {
   providers: [
-    provideRouter(routes),
+    provideRouter(routes,withHashLocation()),
     provideStore({productState: productReducer, cartState: cartReducer}),
     importProvidersFrom(StoreDevtoolsModule.instrument({maxAge: 25})),
     provideEffects([ProductEffects]),

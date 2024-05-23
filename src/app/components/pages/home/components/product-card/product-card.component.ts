@@ -23,6 +23,8 @@ import {addCartItem} from "../../../../../store/cart/cart.actions";
 export class ProductCardComponent {
   @Input() fullWidth: boolean = false;
   @Input() product: Product | undefined;
+  showModal: boolean = false;
+  modalImage: string = '';
 
   constructor(private store: Store<Cart>) {
   }
@@ -39,5 +41,15 @@ export class ProductCardComponent {
         }
       }));
     }
+  }
+
+  openImageModal(image: string) {
+    this.modalImage = image;
+    this.showModal = true;
+  }
+
+  closeImageModal() {
+    this.showModal = false;
+    this.modalImage = '';
   }
 }
