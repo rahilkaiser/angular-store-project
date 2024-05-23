@@ -25,6 +25,7 @@ export class ProductCardComponent {
   @Input() product: Product | undefined;
   showModal: boolean = false;
   modalImage: string = '';
+  @Input() showDescription!: boolean;
 
   constructor(private store: Store<Cart>) {
   }

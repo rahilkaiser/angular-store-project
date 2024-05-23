@@ -19,8 +19,10 @@ import {BooleanInput} from "@angular/cdk/coercion";
 import {MatButton, MatIconButton} from "@angular/material/button";
 import {MatIcon} from "@angular/material/icon";
 import {addCartItem} from "../../../store/cart/cart.actions";
+import { BreakpointObserver, BreakpointState } from '@angular/cdk/layout';
+import {state} from "@angular/animations";
 
-const ROW_HEIGHT: { [id: number]: number } = {1: 400, 3: 450, 4: 425}
+let  ROW_HEIGHT: { [id: number]: number } = {1: 400, 3: 450, 4: 425}
 
 @Component({
   selector: 'app-home',
@@ -46,7 +48,7 @@ const ROW_HEIGHT: { [id: number]: number } = {1: 400, 3: 450, 4: 425}
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
 })
-export class HomeComponent implements OnInit {
+export class HomeComponent implements OnInit, OnDestroy{
 
   @ViewChild('drawer') drawer: MatDrawer | undefined;
 
@@ -59,14 +61,35 @@ export class HomeComponent implements OnInit {
   isDrawerOpen = false;
 
   productState$: Observable<ProductState>;
+  private breakpointSubscription: Subscription;
 
-  constructor(private store: Store, private cartService: CartService, private storeService: StoreService) {
+  fullWidth: boolean = false;
+  showDescr: boolean = true;
+
+  constructor(private store: Store, private cartService: CartService, private storeService: StoreService, private breakpointObserver: BreakpointObserver) {
     this.productState$ = this.store.select(selectAllProducts);
+
+    this.breakpointSubscription = this.breakpointObserver.observe(['(max-width: 950px)'])
+      .subscribe((state: BreakpointState) => {
+        if(state.matches){
+          this.colPerRow = 1
+          this.showDescr = false;
+        } else {
+          this.colPerRow = 3
+          this.showDescr = true;
+        }
+      });
 
   }
 
   ngOnInit(): void {
     this.getProducts();
+  }
+
+  ngOnDestroy(): void {
+    if(this.breakpointSubscription) {
+      this.breakpointSubscription.unsubscribe();
+    }
   }
 
   onColumnsCountChange($event: number) {
@@ -113,4 +136,6 @@ export class HomeComponent implements OnInit {
       this.isDrawerOpen = false;
     }
   }
+
+
 }

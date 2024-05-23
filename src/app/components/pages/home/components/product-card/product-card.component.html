@@ -1,18 +1,28 @@
-<mat-card *ngIf="product" [ngClass]="{'text-center max-w-[450px] h-full min-h-[250px] flex flex-col justify-between': !fullWidth , 'w-full':fullWidth}">
-  <div [ngClass]="{'flex':fullWidth}" class="m-8">
+
+
+
+
+
+
+
+
+<mat-card *ngIf="product" [ngClass]="{'text-center max-w-[450px] h-full min-h-[250px] flex flex-col justify-between': (!fullWidth || !this.showDescription) , 'w-full':fullWidth && this.showDescription}">
+  <div [ngClass]="{'flex':fullWidth && this.showDescription}" class="m-8">
     <img [src]="product.image"
          class="w-full object-cover rounded-md transition-transform duration-200 transform hover:scale-110"
-         [ngClass]="{'h-[200px]':!fullWidth, 'h-[360px]':fullWidth}"
+         [ngClass]="{
+          'h-[150px]':fullWidth !== this.showDescription,
+          'h-[360px]':fullWidth && this.showDescription}"
          (click)="openImageModal(product.image)">
     <div class="w-full flex justify-between items-center"
-         [ngClass]="{'px-8 flex flex-col justify-between':fullWidth}">
+         [ngClass]="{'px-8 flex flex-col justify-between':fullWidth && this.showDescription}">
 
       <div>
         <h5 class="text-lg font-semibold">{{product.category}}</h5>
         <p class="text-xl font-bold mb-2">
           {{product.title}}
         </p>
-        <p *ngIf="fullWidth">{{product.description}}</p>
+        <p *ngIf="fullWidth && this.showDescription">{{product.description}}</p>
       </div>
 
       <div class="flex justify-between pt-6 w-full">

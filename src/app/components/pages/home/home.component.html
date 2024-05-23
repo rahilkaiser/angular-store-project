@@ -32,9 +32,10 @@
         >
           <mat-grid-tile *ngFor="let product of state.products">
             <app-product-card
+              [showDescription]="showDescr"
               [product]="product"
               class="w-full"
-              [fullWidth]="colPerRow === 1"></app-product-card>
+              [fullWidth]="colPerRow === 1 || this.fullWidth"></app-product-card>
           </mat-grid-tile>
         </mat-grid-list>
       </ng-container>
